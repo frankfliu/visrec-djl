@@ -1,0 +1,15 @@
+.gradle
+.DS_Store
+.idea
+*.iml
+.ipynb_checkpoints
+build
+libs
+*.gz
+*.params
+*.zip
+*.jar
+*.so
+*.dylib
+*.dll
+*.class
