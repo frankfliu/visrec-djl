@@ -17,6 +17,7 @@ import ai.djl.training.Trainer;
 import ai.djl.training.dataset.Batch;
 import ai.djl.training.dataset.RandomAccessDataset;
 import ai.djl.training.evaluator.Accuracy;
+import ai.djl.training.evaluator.BinaryAccuracy;
 import ai.djl.training.listener.TrainingListener;
 import ai.djl.training.loss.Loss;
 import ai.djl.translate.Translator;
@@ -42,7 +43,7 @@ public class DjlBinaryClassifierFactory implements BinaryClassifierFactory<float
         int inputSize = block.getInputsNum();
         int[] hiddenLayers = block.getHiddenLayers();
         int epochs = block.getMaxEpochs();
-        int batchSize = 2;
+        int batchSize = 32;
 
         SequentialBlock mlp = new SequentialBlock().add(Blocks.batchFlattenBlock(inputSize));
         for (int size : hiddenLayers) {
@@ -50,22 +51,19 @@ public class DjlBinaryClassifierFactory implements BinaryClassifierFactory<float
         }
         mlp.add(new BatchNorm.Builder().build())
                 .add(new Linear.Builder().setOutChannels(1).build())
-                .add(Activation::sigmoid);
+                .add(arrays -> new NDList(arrays.singletonOrThrow().flatten()));
 
         Model model = Model.newInstance();
         model.setBlock(mlp);
 
-        RandomAccessDataset[] dataset = new RandomAccessDataset[2];
+        RandomAccessDataset[] dataset;
         try {
             CsvDataset csv =
                     CsvDataset.builder()
                             .setCsvFile(block.getTrainingFile())
                             .setSampling(batchSize, true)
                             .build();
-            long total = csv.size();
-            long training = total * 8 / 10;
-            dataset[0] = csv.subDataset(0, training);
-            dataset[1] = csv.subDataset(training, total);
+            dataset = csv.randomSplit(8, 2);
         } catch (IOException e) {
             throw new ClassifierCreationException("Failed to load dataset.", e);
         }
@@ -80,7 +78,7 @@ public class DjlBinaryClassifierFactory implements BinaryClassifierFactory<float
                                         (int) dataset[0].getNumIterations(),
                                         (int) dataset[1].getNumIterations(),
                                         null))
-                        .addEvaluator(new Accuracy());
+                        .addEvaluator(new BinaryAccuracy());
 
         try (Trainer trainer = model.newTrainer(config)) {
             trainer.setMetrics(new Metrics());
@@ -118,7 +116,7 @@ public class DjlBinaryClassifierFactory implements BinaryClassifierFactory<float
 
         @Override
         public Float processOutput(TranslatorContext ctx, NDList list) {
-            return list.singletonOrThrow().getFloat(0);
+            return list.singletonOrThrow().getFloat();
         }
     }
 }
