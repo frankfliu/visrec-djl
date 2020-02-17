@@ -3,6 +3,7 @@ package visrec.djl.spi;
 import ai.djl.MalformedModelException;
 import ai.djl.basicmodelzoo.BasicModelZoo;
 import ai.djl.modality.Classifications;
+import ai.djl.repository.zoo.Criteria;
 import ai.djl.repository.zoo.ModelNotFoundException;
 import ai.djl.repository.zoo.ZooModel;
 import java.awt.image.BufferedImage;
@@ -35,7 +36,12 @@ public class DjlImageClassifierFactory implements ImageClassifierFactory<Buffere
             logger.info("Loading pre-trained model ...");
 
             try {
-                ZooModel<BufferedImage, Classifications> model = BasicModelZoo.MLP.loadModel();
+                Criteria<BufferedImage, Classifications> criteria =
+                        Criteria.builder()
+                                .setTypes(BufferedImage.class, Classifications.class)
+                                .build();
+                ZooModel<BufferedImage, Classifications> model =
+                        BasicModelZoo.MLP.loadModel(criteria);
                 return new SimpleImageClassifier(model, 5);
             } catch (ModelNotFoundException | MalformedModelException | IOException e) {
                 throw new ClassifierCreationException("Failed load model from model zoo.", e);

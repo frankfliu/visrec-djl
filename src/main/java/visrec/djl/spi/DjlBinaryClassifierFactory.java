@@ -16,7 +16,6 @@ import ai.djl.training.DefaultTrainingConfig;
 import ai.djl.training.Trainer;
 import ai.djl.training.dataset.Batch;
 import ai.djl.training.dataset.RandomAccessDataset;
-import ai.djl.training.evaluator.Accuracy;
 import ai.djl.training.evaluator.BinaryAccuracy;
 import ai.djl.training.listener.TrainingListener;
 import ai.djl.training.loss.Loss;
@@ -47,10 +46,10 @@ public class DjlBinaryClassifierFactory implements BinaryClassifierFactory<float
 
         SequentialBlock mlp = new SequentialBlock().add(Blocks.batchFlattenBlock(inputSize));
         for (int size : hiddenLayers) {
-            mlp.add(new Linear.Builder().setOutChannels(size).build()).add(Activation::relu);
+            mlp.add(Linear.builder().setOutChannels(size).build()).add(Activation::relu);
         }
-        mlp.add(new BatchNorm.Builder().build())
-                .add(new Linear.Builder().setOutChannels(1).build())
+        mlp.add(BatchNorm.builder().build())
+                .add(Linear.builder().setOutChannels(1).build())
                 .add(arrays -> new NDList(arrays.singletonOrThrow().flatten()));
 
         Model model = Model.newInstance();

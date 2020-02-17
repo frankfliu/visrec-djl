@@ -15,8 +15,10 @@ package visrec.djl.ml.detection;
 import ai.djl.MalformedModelException;
 import ai.djl.modality.cv.DetectedObjects;
 import ai.djl.modality.cv.util.BufferedImageUtils;
-import ai.djl.mxnet.zoo.MxModelZoo;
+import ai.djl.repository.MRL;
+import ai.djl.repository.zoo.Criteria;
 import ai.djl.repository.zoo.ModelNotFoundException;
+import ai.djl.repository.zoo.ModelZoo;
 import ai.djl.repository.zoo.ZooModel;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
@@ -32,7 +34,12 @@ public class ObjectDetectorTest {
     public void testObjectDetection()
             throws ClassificationException, IOException, ModelNotFoundException,
                     MalformedModelException {
-        try (ZooModel<BufferedImage, DetectedObjects> model = MxModelZoo.SSD.loadModel()) {
+        Criteria<BufferedImage, DetectedObjects> criteria =
+                Criteria.builder()
+                        .setTypes(BufferedImage.class, DetectedObjects.class)
+                        .optApplication(MRL.Model.CV.OBJECT_DETECTION)
+                        .build();
+        try (ZooModel<BufferedImage, DetectedObjects> model = ModelZoo.loadModel(criteria)) {
             SimpleObjectDetector objectDetector = new SimpleObjectDetector(model);
 
             BufferedImage input =
