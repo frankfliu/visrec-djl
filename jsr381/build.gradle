@@ -9,7 +9,7 @@ boolean isRelease = project.hasProperty("release") || project.hasProperty("stagi
 version = "0.3.0" + (isRelease ? "" : "-SNAPSHOT")
 
 dependencies {
-    api "javax.visrec:visrec-api:1.0-SNAPSHOT"
+    api "javax.visrec:visrec-api:1.0.0-b1"
     api "ai.djl:api:0.3.0"
     api "ai.djl:basicdataset:0.3.0"
     api "ai.djl:model-zoo:0.3.0"
