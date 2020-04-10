@@ -5,6 +5,7 @@ plugins {
 
 dependencies {
     implementation project(":jsr381")
+    implementation "org.slf4j:slf4j-simple:1.7.30"
 
     testImplementation("org.testng:testng:6.14.3") {
         exclude group: "junit", module: "junit"

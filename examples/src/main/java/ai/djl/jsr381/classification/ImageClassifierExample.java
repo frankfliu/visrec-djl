@@ -26,11 +26,15 @@ public class ImageClassifierExample {
             throws ClassifierCreationException, ClassificationException {
         File input = new File("../jsr381/src/test/resources/0.png");
 
+        // use pre-trained mlp model
+        File modelDir = new File("../jsr381/src/test/resources/mlp");
+
         ImageClassifier<BufferedImage> classifier =
                 NeuralNetImageClassifier.builder()
                         .inputClass(BufferedImage.class)
                         .imageHeight(28)
                         .imageWidth(28)
+                        .modelFile(modelDir)
                         .build();
 
         Map<String, Float> result = classifier.classify(input);

@@ -14,7 +14,7 @@ package ai.djl.jsr381.detection;
 
 import ai.djl.Application;
 import ai.djl.MalformedModelException;
-import ai.djl.modality.cv.DetectedObjects;
+import ai.djl.modality.cv.output.DetectedObjects;
 import ai.djl.modality.cv.util.BufferedImageUtils;
 import ai.djl.repository.zoo.Criteria;
 import ai.djl.repository.zoo.ModelNotFoundException;

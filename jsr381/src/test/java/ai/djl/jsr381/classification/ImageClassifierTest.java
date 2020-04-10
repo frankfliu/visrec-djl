@@ -29,11 +29,14 @@ public class ImageClassifierTest {
         URL url = BinaryClassifierTest.class.getResource("/0.png");
         File input = new File(url.getFile());
 
+        File modelDir = new File("src/test/resources/mlp");
+
         ImageClassifier<BufferedImage> classifier =
                 NeuralNetImageClassifier.builder()
                         .inputClass(BufferedImage.class)
                         .imageHeight(28)
                         .imageWidth(28)
+                        .modelFile(modelDir)
                         .build();
 
         Map<String, Float> result = classifier.classify(input);

@@ -70,13 +70,7 @@ public class DjlBinaryClassifierFactory implements BinaryClassifierFactory<float
         // setup training configuration
         DefaultTrainingConfig config =
                 new DefaultTrainingConfig(Loss.sigmoidBinaryCrossEntropyLoss())
-                        .addTrainingListeners(
-                                TrainingListener.Defaults.logging(
-                                        BinaryClassifier.class.getSimpleName(),
-                                        batchSize,
-                                        (int) dataset[0].getNumIterations(),
-                                        (int) dataset[1].getNumIterations(),
-                                        null))
+                        .addTrainingListeners(TrainingListener.Defaults.logging())
                         .addEvaluator(new BinaryAccuracy());
 
         try (Trainer trainer = model.newTrainer(config)) {

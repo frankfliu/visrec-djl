@@ -1,12 +1,17 @@
 package ai.djl.jsr381.spi;
 
 import ai.djl.MalformedModelException;
-import ai.djl.basicmodelzoo.BasicModelZoo;
+import ai.djl.Model;
 import ai.djl.jsr381.classification.SimpleImageClassifier;
 import ai.djl.modality.Classifications;
-import ai.djl.repository.zoo.Criteria;
-import ai.djl.repository.zoo.ModelNotFoundException;
+import ai.djl.modality.cv.transform.CenterCrop;
+import ai.djl.modality.cv.transform.Resize;
+import ai.djl.modality.cv.transform.ToTensor;
+import ai.djl.modality.cv.translator.ImageClassificationTranslator;
+import ai.djl.modality.cv.util.NDImageUtils.Flag;
 import ai.djl.repository.zoo.ZooModel;
+import ai.djl.translate.Pipeline;
+import ai.djl.translate.Translator;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -30,27 +35,36 @@ public class DjlImageClassifierFactory implements ImageClassifierFactory<Buffere
     public ImageClassifier<BufferedImage> create(
             NeuralNetImageClassifier.BuildingBlock<BufferedImage> block)
             throws ClassifierCreationException {
+        int width = block.getImageWidth();
+        int height = block.getImageHeight();
+        Flag flag = width < 50 ? Flag.GRAYSCALE : Flag.COLOR;
+
         File modelFile = block.getModelFile();
-        if (modelFile == null) {
+        if (modelFile != null) {
             // load pre-trained model from model zoo
             logger.info("Loading pre-trained model ...");
 
             try {
-                Criteria<BufferedImage, Classifications> criteria =
-                        Criteria.builder()
-                                .setTypes(BufferedImage.class, Classifications.class)
+                Pipeline pipeline = new Pipeline();
+                pipeline.add(new CenterCrop()).add(new Resize(width, height)).add(new ToTensor());
+                Translator<BufferedImage, Classifications> translator =
+                        ImageClassificationTranslator.builder()
+                                .optFlag(flag)
+                                .setPipeline(pipeline)
+                                .setSynsetArtifactName("synset.txt")
+                                .optApplySoftmax(true)
                                 .build();
-                ZooModel<BufferedImage, Classifications> model =
-                        BasicModelZoo.MLP.loadModel(criteria);
-                return new SimpleImageClassifier(model, 5);
-            } catch (ModelNotFoundException | MalformedModelException | IOException e) {
+
+                Model model = Model.newInstance();
+                model.load(modelFile.toPath());
+                ZooModel<BufferedImage, Classifications> zooModel =
+                        new ZooModel<>(model, translator);
+                return new SimpleImageClassifier(zooModel, 5);
+            } catch (MalformedModelException | IOException e) {
                 throw new ClassifierCreationException("Failed load model from model zoo.", e);
             }
         }
 
-        if (!modelFile.exists()) {
-            // train the model first.
-        }
         return null;
     }
 }

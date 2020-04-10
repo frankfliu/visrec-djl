@@ -41,7 +41,7 @@ public class CsvDataset extends RandomAccessDataset {
     }
 
     @Override
-    public long size() {
+    public long availableSize() {
         return records.size();
     }
 

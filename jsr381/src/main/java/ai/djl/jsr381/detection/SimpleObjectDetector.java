@@ -1,8 +1,8 @@
 package ai.djl.jsr381.detection;
 
 import ai.djl.inference.Predictor;
-import ai.djl.modality.cv.DetectedObjects;
-import ai.djl.modality.cv.Rectangle;
+import ai.djl.modality.cv.output.DetectedObjects;
+import ai.djl.modality.cv.output.Rectangle;
 import ai.djl.repository.zoo.ZooModel;
 import ai.djl.translate.TranslateException;
 import java.awt.image.BufferedImage;
