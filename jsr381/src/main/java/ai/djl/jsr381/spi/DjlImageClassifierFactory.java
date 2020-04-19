@@ -13,8 +13,8 @@ import ai.djl.repository.zoo.ZooModel;
 import ai.djl.translate.Pipeline;
 import ai.djl.translate.Translator;
 import java.awt.image.BufferedImage;
-import java.io.File;
 import java.io.IOException;
+import java.nio.file.Path;
 import javax.visrec.ml.ClassifierCreationException;
 import javax.visrec.ml.classification.ImageClassifier;
 import javax.visrec.ml.classification.NeuralNetImageClassifier;
@@ -39,8 +39,8 @@ public class DjlImageClassifierFactory implements ImageClassifierFactory<Buffere
         int height = block.getImageHeight();
         Flag flag = width < 50 ? Flag.GRAYSCALE : Flag.COLOR;
 
-        File modelFile = block.getModelFile();
-        if (modelFile != null) {
+        Path modelPath = block.getImportPath();
+        if (modelPath != null) {
             // load pre-trained model from model zoo
             logger.info("Loading pre-trained model ...");
 
@@ -56,7 +56,7 @@ public class DjlImageClassifierFactory implements ImageClassifierFactory<Buffere
                                 .build();
 
                 Model model = Model.newInstance();
-                model.load(modelFile.toPath());
+                model.load(modelPath);
                 ZooModel<BufferedImage, Classifications> zooModel =
                         new ZooModel<>(model, translator);
                 return new SimpleImageClassifier(zooModel, 5);

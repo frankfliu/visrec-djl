@@ -6,10 +6,10 @@ plugins {
 
 group "ai.djl.jsr381"
 boolean isRelease = project.hasProperty("release") || project.hasProperty("staging")
-version = "0.4.1" + (isRelease ? "" : "-SNAPSHOT")
+version = "0.4.2" + (isRelease ? "" : "-SNAPSHOT")
 
 dependencies {
-    api "javax.visrec:visrec-api:1.0.0-b1"
+    api "javax.visrec:visrec-api:1.0.0-SNAPSHOT"
     api "ai.djl:api:0.4.1"
     api "ai.djl:basicdataset:0.4.1"
     api "ai.djl:model-zoo:0.4.1"

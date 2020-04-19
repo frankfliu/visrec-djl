@@ -14,6 +14,8 @@ package ai.djl.jsr381.classification;
 
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Map;
 import javax.visrec.ml.ClassificationException;
 import javax.visrec.ml.ClassifierCreationException;
@@ -27,14 +29,14 @@ public class ImageClassifierExample {
         File input = new File("../jsr381/src/test/resources/0.png");
 
         // use pre-trained mlp model
-        File modelDir = new File("../jsr381/src/test/resources/mlp");
+        Path modelDir = Paths.get("../jsr381/src/test/resources/mlp");
 
         ImageClassifier<BufferedImage> classifier =
                 NeuralNetImageClassifier.builder()
                         .inputClass(BufferedImage.class)
                         .imageHeight(28)
                         .imageWidth(28)
-                        .modelFile(modelDir)
+                        .importModel(modelDir)
                         .build();
 
         Map<String, Float> result = classifier.classify(input);
