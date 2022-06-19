@@ -13,20 +13,17 @@
 package ai.djl.jsr381.classification;
 
 import java.awt.image.BufferedImage;
-import java.io.File;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Map;
-import javax.visrec.ml.ClassificationException;
-import javax.visrec.ml.ClassifierCreationException;
 import javax.visrec.ml.classification.ImageClassifier;
 import javax.visrec.ml.classification.NeuralNetImageClassifier;
+import javax.visrec.ml.model.ModelCreationException;
 
 public class ImageClassifierExample {
 
-    public static void main(String[] args)
-            throws ClassifierCreationException, ClassificationException {
-        File input = new File("../jsr381/src/test/resources/0.png");
+    public static void main(String[] args) throws ModelCreationException {
+        Path input = Paths.get("../jsr381/src/test/resources/0.png");
 
         // use pre-trained mlp model
         Path modelDir = Paths.get("../jsr381/src/test/resources/mlp");

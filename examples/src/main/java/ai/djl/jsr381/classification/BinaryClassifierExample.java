@@ -12,24 +12,23 @@
  */
 package ai.djl.jsr381.classification;
 
-import java.io.File;
-import javax.visrec.ml.ClassificationException;
-import javax.visrec.ml.ClassifierCreationException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import javax.visrec.ml.classification.BinaryClassifier;
 import javax.visrec.ml.classification.NeuralNetBinaryClassifier;
+import javax.visrec.ml.model.ModelCreationException;
 
 public class BinaryClassifierExample {
 
-    public static void main(String[] args)
-            throws ClassificationException, ClassifierCreationException {
-        File trainingFile = new File("../jsr381/src/test/resources/spam.csv");
+    public static void main(String[] args) throws ModelCreationException {
+        Path trainingFile = Paths.get("../jsr381/src/test/resources/spam.csv");
         BinaryClassifier<float[]> spamClassifier =
                 NeuralNetBinaryClassifier.builder()
                         .inputClass(float[].class)
                         .inputsNum(57)
                         .hiddenLayers(5)
                         .maxEpochs(2)
-                        .trainingFile(trainingFile)
+                        .trainingPath(trainingFile)
                         .build();
 
         // create test email feature

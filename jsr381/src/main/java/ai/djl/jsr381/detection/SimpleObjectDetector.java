@@ -12,9 +12,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
-import javax.visrec.ml.ClassificationException;
+import javax.visrec.ml.classification.ClassificationException;
+import javax.visrec.ml.detection.BoundingBox;
 import javax.visrec.ml.detection.ObjectDetector;
-import javax.visrec.util.BoundingBox;
 
 /** A simple object detector implemented with DJL. */
 public class SimpleObjectDetector implements ObjectDetector<BufferedImage> {

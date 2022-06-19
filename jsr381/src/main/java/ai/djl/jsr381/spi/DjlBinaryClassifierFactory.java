@@ -27,9 +27,9 @@ import ai.djl.translate.TranslateException;
 import ai.djl.translate.Translator;
 import ai.djl.translate.TranslatorContext;
 import java.io.IOException;
-import javax.visrec.ml.ClassifierCreationException;
 import javax.visrec.ml.classification.BinaryClassifier;
 import javax.visrec.ml.classification.NeuralNetBinaryClassifier;
+import javax.visrec.ml.model.ModelCreationException;
 import javax.visrec.spi.BinaryClassifierFactory;
 
 public class DjlBinaryClassifierFactory implements BinaryClassifierFactory<float[]> {
@@ -41,7 +41,7 @@ public class DjlBinaryClassifierFactory implements BinaryClassifierFactory<float
 
     @Override
     public BinaryClassifier<float[]> create(NeuralNetBinaryClassifier.BuildingBlock<float[]> block)
-            throws ClassifierCreationException {
+            throws ModelCreationException {
         int inputSize = block.getInputsNum();
         int[] hiddenLayers = block.getHiddenLayers();
         int epochs = block.getMaxEpochs();
@@ -62,12 +62,12 @@ public class DjlBinaryClassifierFactory implements BinaryClassifierFactory<float
         try {
             CsvDataset csv =
                     CsvDataset.builder()
-                            .setCsvFile(block.getTrainingFile())
+                            .setCsvFile(block.getTrainingPath())
                             .setSampling(batchSize, true)
                             .build();
             dataset = csv.randomSplit(8, 2);
         } catch (IOException | TranslateException e) {
-            throw new ClassifierCreationException("Failed to load dataset.", e);
+            throw new ModelCreationException("Failed to load dataset.", e);
         }
 
         // setup training configuration
@@ -97,7 +97,7 @@ public class DjlBinaryClassifierFactory implements BinaryClassifierFactory<float
                 trainer.notifyListeners(listener -> listener.onEpoch(trainer));
             }
         } catch (IOException | TranslateException e) {
-            throw new ClassifierCreationException("Failed to process dataset.", e);
+            throw new ModelCreationException("Failed to process dataset.", e);
         }
 
         return new SimpleBinaryClassifier(new ZooModel<>(model, new BinaryClassifierTranslator()));

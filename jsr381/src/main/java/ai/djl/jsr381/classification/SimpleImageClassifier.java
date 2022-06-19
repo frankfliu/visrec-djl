@@ -7,14 +7,14 @@ import ai.djl.modality.cv.Image;
 import ai.djl.repository.zoo.ZooModel;
 import ai.djl.translate.TranslateException;
 import java.awt.image.BufferedImage;
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.file.Path;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 import javax.imageio.ImageIO;
-import javax.visrec.ml.ClassificationException;
+import javax.visrec.ml.classification.ClassificationException;
 import javax.visrec.ml.classification.ImageClassifier;
 
 /**
@@ -33,9 +33,9 @@ public class SimpleImageClassifier implements ImageClassifier<BufferedImage> {
     }
 
     @Override
-    public Map<String, Float> classify(File input) throws ClassificationException {
+    public Map<String, Float> classify(Path input) throws ClassificationException {
         try {
-            return classify(ImageIO.read(input));
+            return classify(ImageIO.read(input.toFile()));
         } catch (IOException e) {
             throw new ClassificationException("Couldn't transform input into a BufferedImage", e);
         }

@@ -1,10 +1,10 @@
 package ai.djl.jsr381.spi;
 
 import java.awt.image.BufferedImage;
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
+import java.nio.file.Path;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
@@ -49,8 +49,8 @@ public final class DjlImageFactoryService implements ImageFactoryService {
 
         /** {@inheritDoc} */
         @Override
-        public BufferedImage getImage(File file) throws IOException {
-            BufferedImage img = ImageIO.read(file);
+        public BufferedImage getImage(Path file) throws IOException {
+            BufferedImage img = ImageIO.read(file.toFile());
             if (img == null) {
                 throw new IOException(
                         "Unable to transform File into BufferedImage due to unknown image encoding");

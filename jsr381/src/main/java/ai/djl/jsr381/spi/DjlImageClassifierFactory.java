@@ -2,7 +2,7 @@ package ai.djl.jsr381.spi;
 
 import ai.djl.MalformedModelException;
 import ai.djl.Model;
-import ai.djl.basicdataset.ImageFolder;
+import ai.djl.basicdataset.cv.classification.ImageFolder;
 import ai.djl.basicmodelzoo.cv.classification.ResNetV1;
 import ai.djl.jsr381.classification.SimpleImageClassifier;
 import ai.djl.metric.Metrics;
@@ -28,13 +28,12 @@ import ai.djl.training.loss.Loss;
 import ai.djl.translate.TranslateException;
 import ai.djl.translate.Translator;
 import java.awt.image.BufferedImage;
-import java.io.File;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.util.List;
-import javax.visrec.ml.ClassifierCreationException;
 import javax.visrec.ml.classification.ImageClassifier;
 import javax.visrec.ml.classification.NeuralNetImageClassifier;
+import javax.visrec.ml.model.ModelCreationException;
 import javax.visrec.spi.ImageClassifierFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -51,7 +50,7 @@ public class DjlImageClassifierFactory implements ImageClassifierFactory<Buffere
     @Override
     public ImageClassifier<BufferedImage> create(
             NeuralNetImageClassifier.BuildingBlock<BufferedImage> block)
-            throws ClassifierCreationException {
+            throws ModelCreationException {
         int width = block.getImageWidth();
         int height = block.getImageHeight();
 
@@ -77,13 +76,13 @@ public class DjlImageClassifierFactory implements ImageClassifierFactory<Buffere
                                 .build();
                 zooModel = new ZooModel<>(model, translator);
             } catch (MalformedModelException | IOException e) {
-                throw new ClassifierCreationException("Failed load model from model zoo.", e);
+                throw new ModelCreationException("Failed load model from model zoo.", e);
             }
         } else {
             try {
                 zooModel = trainWithResnet(model, block);
             } catch (IOException | TranslateException e) {
-                throw new ClassifierCreationException("Failed train model.", e);
+                throw new ModelCreationException("Failed train model.", e);
             }
         }
         return new SimpleImageClassifier(zooModel, 5);
@@ -97,14 +96,14 @@ public class DjlImageClassifierFactory implements ImageClassifierFactory<Buffere
         int epochs = block.getMaxEpochs();
         int batch = 1;
 
-        File trainingFile = block.getTrainingFile();
+        Path trainingFile = block.getTrainingPath();
         if (trainingFile == null) {
             throw new IllegalArgumentException("TrainingFile is required.");
         }
         ImageFolder dataset =
                 ImageFolder.builder()
                         .setSampling(batch, true)
-                        .setRepositoryPath(trainingFile.toPath())
+                        .setRepositoryPath(trainingFile)
                         .addTransform(new CenterCrop(width, height))
                         .addTransform(new Resize(width, height))
                         .addTransform(new ToTensor())

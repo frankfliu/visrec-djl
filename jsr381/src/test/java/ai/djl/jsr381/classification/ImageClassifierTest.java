@@ -14,7 +14,6 @@ package ai.djl.jsr381.classification;
 
 import ai.djl.util.ZipUtils;
 import java.awt.image.BufferedImage;
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
@@ -22,18 +21,18 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Map;
-import javax.visrec.ml.ClassificationException;
-import javax.visrec.ml.ClassifierCreationException;
+import java.util.Objects;
 import javax.visrec.ml.classification.ImageClassifier;
 import javax.visrec.ml.classification.NeuralNetImageClassifier;
+import javax.visrec.ml.model.ModelCreationException;
 import org.testng.annotations.Test;
 
 public class ImageClassifierTest {
 
     @Test
-    public void testImageClassifier() throws ClassifierCreationException, ClassificationException {
-        URL url = ImageClassifierTest.class.getResource("/0.png");
-        File input = new File(url.getFile());
+    public void testImageClassifier() throws ModelCreationException {
+        URL url = Objects.requireNonNull(ImageClassifierTest.class.getResource("/0.png"));
+        Path input = Paths.get(url.getFile());
 
         Path modelDir = Paths.get("src/test/resources/mlp");
 
@@ -52,9 +51,8 @@ public class ImageClassifierTest {
     }
 
     @Test
-    public void testImageClassifierTraining()
-            throws ClassifierCreationException, ClassificationException, IOException {
-        File trainingFile = downloadTrainingData();
+    public void testImageClassifierTraining() throws IOException, ModelCreationException {
+        Path trainingFile = downloadTrainingData();
         Path modelDir = Paths.get("build/model");
 
         ImageClassifier<BufferedImage> classifier =
@@ -67,14 +65,14 @@ public class ImageClassifierTest {
                         .maxEpochs(2)
                         .build();
 
-        File input = new File(trainingFile, "cat/cat_1.png");
+        Path input = trainingFile.resolve("cat/cat_1.png");
         Map<String, Float> result = classifier.classify(input);
         for (Map.Entry<String, Float> entry : result.entrySet()) {
             System.out.println(entry.getKey() + ": " + entry.getValue());
         }
     }
 
-    private File downloadTrainingData() throws IOException {
+    private Path downloadTrainingData() throws IOException {
         String link =
                 "https://github.com/JavaVisRec/jsr381-examples-datasets/raw/master/cats_and_dogs_training_data_png.zip";
         URL url = new URL(link);
@@ -85,6 +83,6 @@ public class ImageClassifierTest {
                 ZipUtils.unzip(is, dir);
             }
         }
-        return dir.resolve("training").toFile();
+        return dir.resolve("training");
     }
 }

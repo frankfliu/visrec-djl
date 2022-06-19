@@ -17,7 +17,6 @@ import ai.djl.ModelException;
 import ai.djl.modality.cv.Image;
 import ai.djl.modality.cv.output.DetectedObjects;
 import ai.djl.repository.zoo.Criteria;
-import ai.djl.repository.zoo.ModelZoo;
 import ai.djl.repository.zoo.ZooModel;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
@@ -25,13 +24,11 @@ import java.net.URL;
 import java.util.List;
 import java.util.Map;
 import javax.imageio.ImageIO;
-import javax.visrec.ml.ClassificationException;
-import javax.visrec.util.BoundingBox;
+import javax.visrec.ml.detection.BoundingBox;
 
 public class ObjectDetectorExample {
 
-    public static void main(String[] args)
-            throws ClassificationException, IOException, ModelException {
+    public static void main(String[] args) throws IOException, ModelException {
         Criteria<Image, DetectedObjects> criteria =
                 Criteria.builder()
                         .setTypes(Image.class, DetectedObjects.class)
@@ -39,7 +36,7 @@ public class ObjectDetectorExample {
                         .optArtifactId("yolo")
                         .optArgument("threshold", 0.3)
                         .build();
-        try (ZooModel<Image, DetectedObjects> model = ModelZoo.loadModel(criteria)) {
+        try (ZooModel<Image, DetectedObjects> model = criteria.loadModel()) {
             SimpleObjectDetector objectDetector = new SimpleObjectDetector(model);
             URL imageUrl =
                     new URL("https://djl-ai.s3.amazonaws.com/resources/images/dog_bike_car.jpg");

@@ -1,6 +1,5 @@
 package ai.djl.jsr381.spi;
 
-import javax.visrec.spi.BuilderService;
 import javax.visrec.spi.ImageFactoryService;
 import javax.visrec.spi.ImplementationService;
 import javax.visrec.spi.ServiceProvider;
@@ -11,13 +10,6 @@ import javax.visrec.spi.ServiceProvider;
  * @author Frank Liu
  */
 public final class DjlServiceProvider extends ServiceProvider {
-
-    /** {@inheritDoc} */
-    @Override
-    @SuppressWarnings("deprecation")
-    public BuilderService getBuilderService() {
-        return null;
-    }
 
     /** {@inheritDoc} */
     @Override

@@ -6,10 +6,10 @@ import ai.djl.ndarray.NDManager;
 import ai.djl.training.dataset.RandomAccessDataset;
 import ai.djl.training.dataset.Record;
 import ai.djl.util.Progress;
-import java.io.File;
 import java.io.IOException;
 import java.io.Reader;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.List;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
@@ -53,27 +53,30 @@ public class CsvDataset extends RandomAccessDataset {
 
         List<CSVRecord> records;
 
-        private File file;
+        private Path file;
 
         @Override
         protected Builder self() {
             return this;
         }
 
-        public Builder setCsvFile(File file) {
+        public Builder setCsvFile(Path file) {
             this.file = file;
             return this;
         }
 
         public CsvDataset build() throws IOException {
-            try (Reader reader = Files.newBufferedReader(file.toPath());
+            try (Reader reader = Files.newBufferedReader(file);
                     CSVParser csvParser =
                             new CSVParser(
                                     reader,
                                     CSVFormat.DEFAULT
-                                            .withFirstRecordAsHeader()
-                                            .withIgnoreHeaderCase()
-                                            .withTrim())) {
+                                            .builder()
+                                            .setHeader()
+                                            .setSkipHeaderRecord(true)
+                                            .setIgnoreHeaderCase(true)
+                                            .setTrim(true)
+                                            .build())) {
                 records = csvParser.getRecords();
             }
             return new CsvDataset(this);

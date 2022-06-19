@@ -26,16 +26,14 @@ import java.net.URL;
 import java.util.List;
 import java.util.Map;
 import javax.imageio.ImageIO;
-import javax.visrec.ml.ClassificationException;
-import javax.visrec.util.BoundingBox;
+import javax.visrec.ml.detection.BoundingBox;
 import org.testng.annotations.Test;
 
 public class ObjectDetectorTest {
 
     @Test
     public void testObjectDetection()
-            throws ClassificationException, IOException, ModelNotFoundException,
-                    MalformedModelException {
+            throws IOException, ModelNotFoundException, MalformedModelException {
         Criteria<Image, DetectedObjects> criteria =
                 Criteria.builder()
                         .setTypes(Image.class, DetectedObjects.class)
