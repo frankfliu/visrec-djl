@@ -6,14 +6,16 @@ import ai.djl.ndarray.NDManager;
 import ai.djl.training.dataset.RandomAccessDataset;
 import ai.djl.training.dataset.Record;
 import ai.djl.util.Progress;
+
+import org.apache.commons.csv.CSVFormat;
+import org.apache.commons.csv.CSVParser;
+import org.apache.commons.csv.CSVRecord;
+
 import java.io.IOException;
 import java.io.Reader;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
-import org.apache.commons.csv.CSVFormat;
-import org.apache.commons.csv.CSVParser;
-import org.apache.commons.csv.CSVRecord;
 
 public class CsvDataset extends RandomAccessDataset {
 

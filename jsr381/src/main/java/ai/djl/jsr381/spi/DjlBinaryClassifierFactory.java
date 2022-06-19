@@ -26,7 +26,9 @@ import ai.djl.translate.Batchifier;
 import ai.djl.translate.TranslateException;
 import ai.djl.translate.Translator;
 import ai.djl.translate.TranslatorContext;
+
 import java.io.IOException;
+
 import javax.visrec.ml.classification.BinaryClassifier;
 import javax.visrec.ml.classification.NeuralNetBinaryClassifier;
 import javax.visrec.ml.model.ModelCreationException;

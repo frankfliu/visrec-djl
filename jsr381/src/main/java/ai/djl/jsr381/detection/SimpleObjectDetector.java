@@ -7,11 +7,13 @@ import ai.djl.modality.cv.output.DetectedObjects;
 import ai.djl.modality.cv.output.Rectangle;
 import ai.djl.repository.zoo.ZooModel;
 import ai.djl.translate.TranslateException;
+
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+
 import javax.visrec.ml.classification.ClassificationException;
 import javax.visrec.ml.detection.BoundingBox;
 import javax.visrec.ml.detection.ObjectDetector;

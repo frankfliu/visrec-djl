@@ -14,6 +14,7 @@ package ai.djl.jsr381.classification;
 
 import java.nio.file.Path;
 import java.nio.file.Paths;
+
 import javax.visrec.ml.classification.BinaryClassifier;
 import javax.visrec.ml.classification.NeuralNetBinaryClassifier;
 import javax.visrec.ml.model.ModelCreationException;

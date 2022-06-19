@@ -3,6 +3,7 @@ package ai.djl.jsr381.classification;
 import ai.djl.inference.Predictor;
 import ai.djl.repository.zoo.ZooModel;
 import ai.djl.translate.TranslateException;
+
 import javax.visrec.ml.classification.BinaryClassifier;
 import javax.visrec.ml.classification.ClassificationException;
 

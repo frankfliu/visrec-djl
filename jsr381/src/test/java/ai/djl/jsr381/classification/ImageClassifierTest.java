@@ -13,6 +13,9 @@
 package ai.djl.jsr381.classification;
 
 import ai.djl.util.ZipUtils;
+
+import org.testng.annotations.Test;
+
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.InputStream;
@@ -22,10 +25,10 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Map;
 import java.util.Objects;
+
 import javax.visrec.ml.classification.ImageClassifier;
 import javax.visrec.ml.classification.NeuralNetImageClassifier;
 import javax.visrec.ml.model.ModelCreationException;
-import org.testng.annotations.Test;
 
 public class ImageClassifierTest {
 

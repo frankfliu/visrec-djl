@@ -18,11 +18,13 @@ import ai.djl.modality.cv.Image;
 import ai.djl.modality.cv.output.DetectedObjects;
 import ai.djl.repository.zoo.Criteria;
 import ai.djl.repository.zoo.ZooModel;
+
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.net.URL;
 import java.util.List;
 import java.util.Map;
+
 import javax.imageio.ImageIO;
 import javax.visrec.ml.detection.BoundingBox;
 

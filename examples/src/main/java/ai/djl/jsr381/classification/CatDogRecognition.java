@@ -13,6 +13,7 @@
 package ai.djl.jsr381.classification;
 
 import ai.djl.util.ZipUtils;
+
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.InputStream;
@@ -21,6 +22,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Map;
+
 import javax.visrec.ml.classification.ImageClassifier;
 import javax.visrec.ml.classification.NeuralNetImageClassifier;
 import javax.visrec.ml.model.ModelCreationException;

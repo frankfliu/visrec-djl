@@ -20,14 +20,17 @@ import ai.djl.repository.zoo.Criteria;
 import ai.djl.repository.zoo.ModelNotFoundException;
 import ai.djl.repository.zoo.ModelZoo;
 import ai.djl.repository.zoo.ZooModel;
+
+import org.testng.annotations.Test;
+
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.net.URL;
 import java.util.List;
 import java.util.Map;
+
 import javax.imageio.ImageIO;
 import javax.visrec.ml.detection.BoundingBox;
-import org.testng.annotations.Test;
 
 public class ObjectDetectorTest {
 

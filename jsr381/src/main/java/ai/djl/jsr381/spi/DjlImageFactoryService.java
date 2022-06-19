@@ -9,6 +9,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
+
 import javax.imageio.ImageIO;
 import javax.visrec.ImageFactory;
 import javax.visrec.spi.ImageFactoryService;
@@ -53,7 +54,8 @@ public final class DjlImageFactoryService implements ImageFactoryService {
             BufferedImage img = ImageIO.read(file.toFile());
             if (img == null) {
                 throw new IOException(
-                        "Unable to transform File into BufferedImage due to unknown image encoding");
+                        "Unable to transform File into BufferedImage due to unknown image"
+                                + " encoding");
             }
             return img;
         }
@@ -75,7 +77,8 @@ public final class DjlImageFactoryService implements ImageFactoryService {
             BufferedImage img = ImageIO.read(file);
             if (img == null) {
                 throw new IOException(
-                        "Unable to transform InputStream into BufferedImage due to unknown image encoding");
+                        "Unable to transform InputStream into BufferedImage due to unknown image"
+                                + " encoding");
             }
             return img;
         }

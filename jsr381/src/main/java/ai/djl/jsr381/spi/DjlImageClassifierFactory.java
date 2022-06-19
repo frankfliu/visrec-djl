@@ -27,16 +27,19 @@ import ai.djl.training.listener.TrainingListener;
 import ai.djl.training.loss.Loss;
 import ai.djl.translate.TranslateException;
 import ai.djl.translate.Translator;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.util.List;
+
 import javax.visrec.ml.classification.ImageClassifier;
 import javax.visrec.ml.classification.NeuralNetImageClassifier;
 import javax.visrec.ml.model.ModelCreationException;
 import javax.visrec.spi.ImageClassifierFactory;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 public class DjlImageClassifierFactory implements ImageClassifierFactory<BufferedImage> {
 

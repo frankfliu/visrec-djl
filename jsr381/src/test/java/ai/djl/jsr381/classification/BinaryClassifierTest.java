@@ -12,14 +12,16 @@
  */
 package ai.djl.jsr381.classification;
 
+import org.testng.annotations.Test;
+
 import java.net.URL;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Objects;
+
 import javax.visrec.ml.classification.BinaryClassifier;
 import javax.visrec.ml.classification.NeuralNetBinaryClassifier;
 import javax.visrec.ml.model.ModelCreationException;
-import org.testng.annotations.Test;
 
 public class BinaryClassifierTest {
 

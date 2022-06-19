@@ -6,6 +6,7 @@ import ai.djl.modality.cv.BufferedImageFactory;
 import ai.djl.modality.cv.Image;
 import ai.djl.repository.zoo.ZooModel;
 import ai.djl.translate.TranslateException;
+
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.InputStream;
@@ -13,6 +14,7 @@ import java.nio.file.Path;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
+
 import javax.imageio.ImageIO;
 import javax.visrec.ml.classification.ClassificationException;
 import javax.visrec.ml.classification.ImageClassifier;
